@@ -53,6 +53,8 @@ INSTALLED_APPS = [
     'corsheaders',
 
     # self-build apps
+    # HR
+    'location',
 ]
 
 MIDDLEWARE = [
