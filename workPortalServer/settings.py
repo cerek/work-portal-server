@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     # self-build apps
     # HR
     'location',
+    'department',
 ]
 
 MIDDLEWARE = [
