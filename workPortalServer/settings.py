@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     # HR
     'location',
     'department',
+    'employee',
 ]
 
 MIDDLEWARE = [
@@ -176,11 +177,12 @@ ACCOUNT_USERNAME_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = 'optional'
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": config('ACCESS_TOKEN_LIFETIME', default=timedelta(minutes=1)),
-    "REFRESH_TOKEN_LIFETIME": config('REFRESH_TOKEN_LIFETIME', default=timedelta(days=1)),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=int(config('ACCESS_TOKEN_LIFETIME', default=1))),
+    "REFRESH_TOKEN_LIFETIME": timedelta(minutes=int(config('REFRESH_TOKEN_LIFETIME', default=1440))),
     'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True,
 }
+print(SIMPLE_JWT)
 
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
