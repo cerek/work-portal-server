@@ -169,7 +169,7 @@ REST_AUTH = {
     'JWT_AUTH_COOKIE': 'auth',
     'JWT_AUTH_HTTPONLY': False,
     'JWT_AUTH_RETURN_EXPIRATION': True,
-    # 'USER_DETAILS_SERIALIZER': 'employee.serializers.UserTokenSerializer',
+    'USER_DETAILS_SERIALIZER': 'employee.serializers.UserTokenSerializer',
 }
 
 SITE_ID = 1

@@ -5,6 +5,8 @@ from department.models import Department
 from department.serializers import DepartmentSerializer
 from location.models import Location
 from location.serializers import LocationSerializer
+from upload.models import Upload
+from upload.serializers import UploadSerializer
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -28,10 +30,12 @@ class UserSerializer(serializers.ModelSerializer):
         new_user.save()
         return new_user
 
+
 class EmployeeSerializer(serializers.ModelSerializer):
     employee = UserSerializer()
     employee_department = serializers.PrimaryKeyRelatedField(queryset=Department.objects.all())
     employee_work_location = serializers.PrimaryKeyRelatedField(queryset=Location.objects.all())
+    employee_avatar = serializers.PrimaryKeyRelatedField(queryset=Upload.objects.all(), required=False)
     employee_onboard_days = serializers.SerializerMethodField()
     employee_gender_hm = serializers.SerializerMethodField()
 
@@ -59,6 +63,11 @@ class EmployeeSerializer(serializers.ModelSerializer):
             location_serializer = LocationSerializer(Location.objects.get(pk=ret['employee_work_location']))
             ret['employee_work_location'] = location_serializer.data
 
+        # Serialzier the avatar information from PrimaryKeyRelatedField
+        if ret['employee_avatar'] is not None:
+            upload_serializer = UploadSerializer(Upload.objects.get(pk=ret['employee_avatar']))
+            ret['employee_avatar'] = upload_serializer.data
+
         return ret
 
     def create(self, validated_data):
@@ -84,16 +93,16 @@ class EmployeeSerializer(serializers.ModelSerializer):
             user_data.pop('password')
         # Update the user instance
         if user_data:
-            for k,v in user_data.items():
+            for k, v in user_data.items():
                 setattr(user_instance, k, v)
         user_instance.save()
         # Update the user-group relation
         if 'employee_department' in validated_data:
             user_instance.groups.clear()
-            user_instance.groups.add(validated_data['employee_department'].department)
+            user_instance.groups.add(
+                validated_data['employee_department'].department)
 
         return super().update(instance, validated_data)
-
 
 
 class UserContactSerializer(serializers.ModelSerializer):
@@ -179,3 +188,16 @@ class EmployeeSelectBoxSerializer(serializers.ModelSerializer):
     class Meta:
         model = Employee
         fields = ['id', 'employee']
+
+
+class UserTokenSerializer(serializers.ModelSerializer):
+    employee_avatar = serializers.SerializerMethodField()
+
+    class Meta:
+        model = User
+        fields = ('pk', 'email', 'username', 'first_name',
+                  'last_name', 'employee', 'employee_avatar')
+
+    def get_employee_avatar(self, obj):
+        avatar_url = obj.employee.employee_avatar.file_url.url
+        return avatar_url
