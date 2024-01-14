@@ -3,6 +3,7 @@ from django.contrib.auth.models import User, Permission
 from datetime import datetime
 from location.models import Location
 from department.models import Department
+from upload.models import Upload
 
 
 def get_today():
@@ -30,6 +31,8 @@ class Employee(models.Model):
         Department, on_delete=models.DO_NOTHING)
     employee_join_day = models.DateTimeField(
         default=get_today, blank=True, null=True)
+    employee_avatar = models.ForeignKey(
+        Upload, on_delete=models.DO_NOTHING, null=True, blank=True, default=1)
     created_time = models.DateTimeField(auto_now_add=True)
     updated_time = models.DateTimeField(auto_now=True)
 
@@ -66,4 +69,6 @@ class Employee(models.Model):
             ('view_employee_dept_contact', 'Can view employee department contact'),
             ('view_employee_all_contact', 'Can view employee all contact'),
             ('change_employee_password', 'Can change employee password'),
+            ('view_employee_permission', 'Can view employee permission'),
+            ('view_department_permission', 'Can view department permission'),
         ]

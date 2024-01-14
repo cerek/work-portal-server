@@ -8,7 +8,7 @@ from employee.serializers import EmployeeChangePasswordSerializer
 from employee.serializers import EmployeeChangePasswordAdminSerializer
 from employee.serializers import EmployeeSelectBoxSerializer
 from rest_framework.permissions import IsAuthenticated
-from employee.permissions import IsOwner, ViewContactPermission, ChangePasswordAdminPermission
+from employee.permissions import ViewProfile, IsOwner, ViewContactPermission, ChangePasswordAdminPermission
 from utils.public_permission import ExtendViewPermission
 from utils.public_pagination import StandardResultsSetPagination
 
@@ -41,7 +41,7 @@ class EmployeeViewSet(viewsets.ModelViewSet):
 
 
 class EmployeeProfileViewSet(RetrieveAPIView):
-    permission_classes = [IsAuthenticated & IsOwner]
+    permission_classes = [IsAuthenticated & ViewProfile]
     queryset = Employee.objects.all()
     serializer_class = EmployeeSerializer
 
@@ -64,7 +64,7 @@ class EmployeeContactListView(ListAPIView):
 
 
 class EmployeeChangePasswordView(UpdateAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated & IsOwner]
     queryset = Employee.objects.all()
     serializer_class = EmployeeChangePasswordSerializer
 
