@@ -60,6 +60,8 @@ INSTALLED_APPS = [
 
     # Admin
     'upload',
+    'menu',
+    'permission',
 ]
 
 MIDDLEWARE = [
