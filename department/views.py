@@ -22,7 +22,10 @@ class DepartmentViewSet(viewsets.ModelViewSet):
 
         # Using the delete() with Group object, the related Department object will be deleted
         if delete_obj.department:
-            delete_obj.department.delete()
+            try:
+                delete_obj.department.delete()
+            except Exception as e:
+                return Response({'error': e.args}, status=status.HTTP_400_BAD_REQUEST)
 
         # Return the deleted object to client.
         return Response(obj_serializer, status=status.HTTP_200_OK)

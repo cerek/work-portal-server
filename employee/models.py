@@ -69,4 +69,6 @@ class Employee(models.Model):
             ('view_employee_dept_contact', 'Can view employee department contact'),
             ('view_employee_all_contact', 'Can view employee all contact'),
             ('change_employee_password', 'Can change employee password'),
+            ('view_employee_permission', 'Can view employee permission'),
+            ('view_department_permission', 'Can view department permission'),
         ]
