@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'location',
     'department',
     'employee',
+    'timeoff',
 
     # Admin
     'upload',
