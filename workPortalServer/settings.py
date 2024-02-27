@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
-from decouple import config
+from decouple import config, Csv
 import os
 
 
@@ -27,10 +27,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG')
+DEBUG = config('DEBUG', cast=bool)
 
-ALLOWED_HOSTS = config('ALLOWED_HOSTS')
-
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='*', cast=Csv())
 # Application definition
 
 INSTALLED_APPS = [
@@ -58,6 +57,9 @@ INSTALLED_APPS = [
     'department',
     'employee',
     'timeoff',
+
+    # IT
+    'ticket',
 
     # Admin
     'upload',
@@ -145,7 +147,7 @@ USE_TZ = config('USE_TZ')
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-MEDIA_URL = 'http://127.0.0.1:8000/static/img/'
+MEDIA_URL = config('MEDIA_URL', default='http://127.0.0.1:8000') + '/static/img/'
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
@@ -213,7 +215,4 @@ if not DEBUG:
 if DEBUG:
     CORS_ALLOW_ALL_ORIGINS = True
 else:
-    CORS_ALLOWED_ORIGINS = [
-        "http://localhost:3000/",
-        "http://127.0.0.1:3000/",
-    ]
+    CORS_ALLOWED_ORIGINS = config('CORS_ALLOWED_ORIGINS', cast=Csv(), default='http://127.0.0.1:3000')
