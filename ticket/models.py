@@ -22,7 +22,7 @@ class Ticket(models.Model):
     ticket_solution = models.TextField(null=True, blank=True)
     ticket_status = models.SmallIntegerField(choices=STATUS_CHOICES, default=0)
     ticket_type = models.ForeignKey('TicketType', on_delete=models.DO_NOTHING)
-    ticket_attachment = models.ManyToManyField(Upload, null=True, blank=True)
+    ticket_attachment = models.ManyToManyField(Upload, blank=True)
     ticket_final_time = models.DateTimeField(null=True, blank=True)
     # ticket_rating = models.SmallIntegerField(choices=RATING_CHOICES, default=0)
     created_time = models.DateTimeField(auto_now_add=True)
@@ -41,6 +41,7 @@ class Ticket(models.Model):
             ('view_ticket_kanban', 'Can view ticket kanban'),
             ('view_ticket_report', 'Can view ticket report'),
             ('view_ticket_personal', 'Can view ticket personal'),
+            ('view_todo_ticket_dept', 'Can view todo ticket department'),
             ('update_ticket_department', 'Can update own department tickets'),
         ]
 

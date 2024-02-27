@@ -5,7 +5,7 @@ from ticket.views import TicketViewSet, TicketTypeViewSet, MyTicketViewSet
 
 router = DefaultRouter()
 router.register(r'ticket', TicketViewSet, basename="ticket")
-router.register(r'myticket', MyTicketViewSet, basename="ticket")
+router.register(r'myticket', MyTicketViewSet, basename="myticket")
 router.register(r'tickettype', TicketTypeViewSet, basename="ticket-type")
 
 urlpatterns = [
