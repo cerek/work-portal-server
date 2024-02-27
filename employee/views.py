@@ -6,7 +6,7 @@ from employee.serializers import EmployeeSerializer
 from employee.serializers import EmployeeContactSerializer
 from employee.serializers import EmployeeChangePasswordSerializer
 from employee.serializers import EmployeeChangePasswordAdminSerializer
-from employee.serializers import EmployeeSelectBoxSerializer
+from employee.serializers import SelectBoxEmployeeSerializer
 from rest_framework.permissions import IsAuthenticated
 from employee.permissions import ViewProfile, IsOwner, ViewContactPermission, ChangePasswordAdminPermission
 from utils.public_permission import ExtendViewPermission
@@ -75,8 +75,11 @@ class EmployeeChangePasswordAdminView(UpdateAPIView):
     serializer_class = EmployeeChangePasswordAdminSerializer
 
 
-class EmployeeSelectBoxListView(ListAPIView):
-    permission_classes = [ExtendViewPermission]
-    serializer_class = EmployeeSelectBoxSerializer
+class SelectBoxEmployeeViewSet(ListAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = SelectBoxEmployeeSerializer
     queryset = Employee.objects.all()
+    filterset_fields = ['employee__username', 'employee__first_name',
+                        'employee__last_name']
+    search_fields = ['employee__username', 'employee__first_name', 'employee__last_name']
     pagination_class = StandardResultsSetPagination

@@ -42,3 +42,14 @@ class DepartmentSerializer(serializers.ModelSerializer):
             group_serializer.save()
 
         return super().update(instance, validated_data)
+
+class SelectBoxDepartmentSerializer(serializers.ModelSerializer):
+    value = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Department
+        fields = ['id', 'value']
+
+    def get_value(self, obj):
+        res_department = f'{obj.department.name.capitalize()}'
+        return res_department

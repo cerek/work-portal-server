@@ -101,3 +101,10 @@ class TimeoffTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = TimeoffType
         fields = '__all__'
+
+
+class SelectBoxTimeoffTypeSerializer(serializers.ModelSerializer):
+    value = serializers.CharField(source="timeoff_type_name")
+    class Meta:
+        model = TimeoffType
+        fields = ['id', 'value']
