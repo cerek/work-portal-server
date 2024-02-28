@@ -84,3 +84,10 @@ class MyTicketSerializer(TicketSerializer):
                 {'ticket_status': 'You can\'t edit a "Close" Ticket. Please create a new Ticket to report your issue.'})
         else:
             return super().update(instance, validated_data)
+
+
+class SelectBoxTicketTypeSerializer(serializers.ModelSerializer):
+    value = serializers.CharField(source="ticket_type_name")
+    class Meta:
+        model = TicketType
+        fields = ['id', 'value']

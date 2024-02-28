@@ -176,18 +176,16 @@ class EmployeeChangePasswordAdminSerializer(serializers.ModelSerializer):
         return instance
 
 
-class UserSelectBoxSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ['username']
-
-
-class EmployeeSelectBoxSerializer(serializers.ModelSerializer):
-    employee = UserSelectBoxSerializer(required=False)
+class SelectBoxEmployeeSerializer(serializers.ModelSerializer):
+    value = serializers.SerializerMethodField()
 
     class Meta:
         model = Employee
-        fields = ['id', 'employee']
+        fields = ['id', 'value']
+
+    def get_value(self, obj):
+        res_employee = f'{obj.employee.username.capitalize()}({obj.employee.first_name} {obj.employee.last_name})'
+        return res_employee
 
 
 class UserTokenSerializer(serializers.ModelSerializer):

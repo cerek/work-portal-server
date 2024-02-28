@@ -5,7 +5,7 @@ from employee.views import EmployeeProfileViewSet
 from employee.views import EmployeeContactListView
 from employee.views import EmployeeChangePasswordView
 from employee.views import EmployeeChangePasswordAdminView
-from employee.views import EmployeeSelectBoxListView
+from employee.views import SelectBoxEmployeeViewSet
 
 
 router = DefaultRouter()
@@ -20,7 +20,6 @@ urlpatterns = [
          EmployeeProfileViewSet.as_view(), name='employee-profile'),
     path('employee/contact/', EmployeeContactListView.as_view(),
          name='employee-contact'),
-    path('employee/selectbox/', EmployeeSelectBoxListView.as_view(),
-         name='employee-selectbox'),
+    path('selectbox/employee/', SelectBoxEmployeeViewSet.as_view(), name='select-employee'),
     path('', include(router.urls)),
 ]

@@ -1,7 +1,9 @@
 from rest_framework import viewsets, status
 from rest_framework.response import Response
+from rest_framework.generics import ListAPIView
+from rest_framework.permissions import IsAuthenticated
 from location.models import Location
-from location.serializers import LocationSerializer
+from location.serializers import LocationSerializer, SelectBoxLocationSerializer
 from utils.public_permission import ExtendViewPermission
 from utils.public_pagination import StandardResultsSetPagination
 
@@ -23,3 +25,12 @@ class LocationViewSet(viewsets.ModelViewSet):
 
         # Return the deleted object to client.
         return Response(obj_serializer, status=status.HTTP_200_OK)
+
+
+class SelectBoxLocationViewSet(ListAPIView):
+    permission_classes = [IsAuthenticated]
+    queryset = Location.objects.all()
+    serializer_class = SelectBoxLocationSerializer
+    filterset_fields = ['location_name', 'location_address', 'location_zipcode', 'location_desc']
+    search_fields = ['location_name', 'location_address', 'location_zipcode', 'location_desc']
+    pagination_class = StandardResultsSetPagination

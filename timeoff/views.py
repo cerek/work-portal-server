@@ -1,8 +1,9 @@
 from rest_framework import viewsets, status, mixins
 from rest_framework.response import Response
+from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated
 from timeoff.models import Timeoff, TimeoffType
-from timeoff.serializers import TimeoffSerializer, MyTimeoffSerializer, TimeoffTypeSerializer
+from timeoff.serializers import TimeoffSerializer, MyTimeoffSerializer, TimeoffTypeSerializer, SelectBoxTimeoffTypeSerializer
 from timeoff.permissions import ViewPersonalTimeoffPermission
 from utils.public_permission import ExtendViewPermission
 from utils.public_pagination import StandardResultsSetPagination
@@ -63,3 +64,11 @@ class TimeoffTypeViewSet(viewsets.ModelViewSet):
 
         # Return the deleted object to client.
         return Response(obj_serializer, status=status.HTTP_200_OK)
+
+class SelectBoxTimeoffTypeViewSet(ListAPIView):
+    permission_classes = [IsAuthenticated]
+    queryset = TimeoffType.objects.all()
+    serializer_class = SelectBoxTimeoffTypeSerializer
+    filterset_fields = ['timeoff_type_name']
+    search_fields = ['timeoff_type_name']
+    pagination_class = StandardResultsSetPagination
