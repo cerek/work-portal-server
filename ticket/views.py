@@ -4,8 +4,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from ticket.models import Ticket, TicketType
-from ticket.serializers import TicketSerializer, TicketTypeSerializer, MyTicketSerializer, SelectBoxTicketTypeSerializer
-from ticket.permissions import ViewMyTicketPermission
+from ticket.serializers import TicketSerializer, TicketTypeSerializer, MyTicketSerializer, SelectBoxTicketTypeSerializer, MyDeptTicketSerializer
+from ticket.permissions import ViewMyTicketPermission, ViewMyDeptTicketPermission
 from utils.public_permission import ExtendViewPermission
 from utils.public_pagination import StandardResultsSetPagination
 from datetime import datetime, timedelta
@@ -177,9 +177,28 @@ class MyTicketViewSet(mixins.CreateModelMixin,
     serializer_class = MyTicketSerializer
     filterset_fields = ['ticket_title', 'ticket_assign_department', 'ticket_assigner', 'ticket_description', 'ticket_status']
     search_fields = ['ticket_title', 'ticket_assign_department__department__name', 'ticket_description', 'ticket_status', 'ticket_assigner__employee__username']
+    pagination_class = StandardResultsSetPagination
+
 
     def get_queryset(self):
         user = self.request.user
         qs = Ticket.objects.filter(ticket_creator=user.employee)
         return qs
 
+
+class MyDeptTicketViewSet(mixins.ListModelMixin,
+                      mixins.RetrieveModelMixin,
+                      mixins.UpdateModelMixin,
+                      viewsets.GenericViewSet):
+    permission_classes = [ViewMyDeptTicketPermission]
+    serializer_class = MyDeptTicketSerializer
+    filterset_fields = ['ticket_title', 'ticket_assign_department', 'ticket_assigner', 'ticket_description', 'ticket_status', 'created_time']
+    search_fields = ['ticket_title', 'ticket_assign_department__department__name', 'ticket_description', 'ticket_status', 'ticket_assigner__employee__username']
+    pagination_class = StandardResultsSetPagination
+
+
+    def get_queryset(self):
+        user = self.request.user
+        my_dept = user.employee.employee_department
+        qs = Ticket.objects.filter(ticket_assign_department=my_dept)
+        return qs

@@ -91,3 +91,24 @@ class SelectBoxTicketTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = TicketType
         fields = ['id', 'value']
+
+
+class MyDeptTicketSerializer(TicketSerializer):
+    ticket_creator = serializers.PrimaryKeyRelatedField(read_only=True)
+
+    def update(self, instance, validated_data):
+        user = self.context['request'].user
+        # Only can edit the ticket_title, ticket_assign_department, ticket_description, ticket_type, ticket_attachment when the ticket status is new
+        for deny_field in ['ticket_title', 'ticket_creator', 'ticket_assigner', 'ticket_final_time', 'ticket_type']:
+            if deny_field in validated_data.keys():
+                raise serializers.ValidationError(
+                    {deny_field: f"Can't update with {deny_field}"})
+        if instance.ticket_status == 5:
+            raise serializers.ValidationError(
+                {'ticket_status': 'You can\'t edit a "Close" Ticket. Please create a new Ticket to report your issue.'})
+
+        if 'ticket_status' not in validated_data:
+            validated_data['ticket_status'] = 3
+        if 'ticket_solution' not in validated_data:
+            validated_data['ticket_assigner'] = user.employee
+        return super().update(instance, validated_data)
