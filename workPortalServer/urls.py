@@ -19,6 +19,7 @@ urlpatterns = [
     path('', include('permission.urls')),
     path('', include('timeoff.urls')),
     path('', include('ticket.urls')),
+    path('', include('systemlogs.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

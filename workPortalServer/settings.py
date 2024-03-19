@@ -65,6 +65,7 @@ INSTALLED_APPS = [
     'upload',
     'menu',
     'permission',
+    'systemlogs',
 ]
 
 MIDDLEWARE = [
@@ -76,6 +77,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'systemlogs.middleware.SystemlogsMiddleware',
 ]
 
 ROOT_URLCONF = 'workPortalServer.urls'
