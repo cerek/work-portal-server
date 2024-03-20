@@ -21,11 +21,13 @@ class SystemlogsMiddleware:
     def __call__(self, request):
         # Code to be executed for each request before
         # the view (and later middleware) are called.
-        request_body = '-'
-        if request.method != 'GET':
+        request_body = ''
+        if request.method not in ['GET', 'DELETE']:
             request_body = json.loads(request.body)
             if 'password' in request_body:
                 request_body['password'] = '**********'
+        else:
+            request_body = '-'
 
         new_log_data = {
             "systemlog_request_body": request_body,
