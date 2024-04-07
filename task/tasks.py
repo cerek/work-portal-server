@@ -1,0 +1,1 @@
+from task.celery_task_system_testing import system_task_testing

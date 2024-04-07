@@ -50,6 +50,8 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'corsheaders',
+    'django_celery_beat',
+    'django_celery_results',
 
     # self-build apps
     # HR
@@ -66,6 +68,7 @@ INSTALLED_APPS = [
     'menu',
     'permission',
     'systemlogs',
+    'task',
 ]
 
 MIDDLEWARE = [
@@ -218,3 +221,9 @@ if DEBUG:
     CORS_ALLOW_ALL_ORIGINS = True
 else:
     CORS_ALLOWED_ORIGINS = config('CORS_ALLOWED_ORIGINS', cast=Csv(), default='http://127.0.0.1:3000')
+
+CELERY_BROKER_URL = config('CELERY_BROKER_URL')
+CELERY_TIMEZONE = config('CELERY_TIMEZONE', default=TIME_ZONE)
+CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
+CELERY_RESULT_BACKEND = 'django-db'
+CELERY_RESULT_EXTENDED = True
