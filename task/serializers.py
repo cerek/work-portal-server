@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from django_celery_beat.models import IntervalSchedule, ClockedSchedule, CrontabSchedule
+from django_celery_results.models import TaskResult
 from task.models import WorkPeriodicTask
 
 
@@ -98,6 +99,12 @@ class WorkPeriodicTaskSerializer(serializers.ModelSerializer):
                 return super().update(instance, validated_data)
         else:
             return super().update(instance, validated_data)
+
+
+class WorkPeriodicTaskResultSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TaskResult
+        fields = '__all__'
 
 
 class SelectBoxClockedSerializer(serializers.ModelSerializer):

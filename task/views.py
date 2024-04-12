@@ -1,11 +1,12 @@
-from rest_framework import viewsets, status
+from rest_framework import viewsets, status, mixins
 from rest_framework.response import Response
 from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated
 from task.models import WorkPeriodicTask
-from task.serializers import WorkPeriodicTaskSerializer, ClockedScheduleSerializer, IntervalScheduleSerializer, CrontabScheduleSerializer
+from task.serializers import WorkPeriodicTaskSerializer, WorkPeriodicTaskResultSerializer, ClockedScheduleSerializer, IntervalScheduleSerializer, CrontabScheduleSerializer
 from task.serializers import SelectBoxClockedSerializer, SelectBoxCrontabSerializer, SelectBoxIntervalSerializer
 from django_celery_beat.models import ClockedSchedule, IntervalSchedule, CrontabSchedule
+from django_celery_results.models import TaskResult
 from utils.public_permission import ExtendViewPermission
 from utils.public_pagination import StandardResultsSetPagination
 
@@ -14,8 +15,8 @@ class WorkPeriodicTaskViewSet(viewsets.ModelViewSet):
     permission_classes = [ExtendViewPermission]
     queryset = WorkPeriodicTask.objects.all()
     serializer_class = WorkPeriodicTaskSerializer
-    filterset_fields = ['name', 'task', 'description', 'task_type', 'enabled']
-    search_fields = ['name', 'task', 'description', 'task_type', 'enabled']
+    filterset_fields = ['name', 'task', 'description', 'task_type', 'enabled', 'task_creator__employee__username']
+    search_fields = ['name', 'task', 'description', 'task_type', 'enabled', 'task_creator__employee__username']
     pagination_class = StandardResultsSetPagination
 
     def destroy(self, request, *args, **kwargs):
@@ -29,6 +30,19 @@ class WorkPeriodicTaskViewSet(viewsets.ModelViewSet):
 
         # Return the deleted object to client.
         return Response(obj_serializer, status=status.HTTP_200_OK)
+
+
+class WorkPeriodicTaskResultViewSet(mixins.ListModelMixin,
+                                    mixins.RetrieveModelMixin,
+                                    viewsets.GenericViewSet):
+    permission_classes = [ExtendViewPermission]
+    queryset = TaskResult.objects.all()
+    serializer_class = WorkPeriodicTaskResultSerializer
+    filterset_fields = ['task_id', 'periodic_task_name', 'task_name', 'status', 'result',
+                        'date_created', 'date_done', 'traceback']
+    search_fields = ['task_id', 'periodic_task_name', 'task_name', 'status', 'result', 'date_created',
+                     'date_done', 'traceback', 'worker', 'content_type']
+    pagination_class = StandardResultsSetPagination
 
 
 class ClockedScheduleViewSet(viewsets.ModelViewSet):

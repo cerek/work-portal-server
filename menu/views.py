@@ -48,7 +48,7 @@ class MenuGenerateListView(ListAPIView):
         it_menu_context = ['asset', 'ticket_system',]
         accounting_menu_context = []
         inventory_menu_context = ['warehouse_manager',]
-        admin_menu_context = ['permission_manager', 'menu_manager', 'static_manager', 'logging_manager',]
+        admin_menu_context = ['permission_manager', 'menu_manager', 'static_manager', 'logging_manager', 'task_manager']
 
 
         # Retrieve Public Menu, Only get the active public menu list
