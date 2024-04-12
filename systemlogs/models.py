@@ -10,7 +10,8 @@ class Systemlogs(models.Model):
         (3, 'PATCH'),
         (4, 'DELETE'),
     ]
-    systemlog_operator = models.ForeignKey(Employee, on_delete=models.DO_NOTHING, null=False, blank=False)
+    systemlog_operator = models.CharField(max_length=100, null=False, blank=False)
+    systemlog_operator_dept = models.CharField(max_length=100, null=False, blank=False)
     systemlog_operate_module = models.CharField(max_length=200, null=False, blank=False)
     systemlog_request_method = models.SmallIntegerField(choices=REQUEST_METHOD_CHOICES, null=False, blank=False)
     systemlog_request_body = models.TextField(null=False, blank=False, default='-')

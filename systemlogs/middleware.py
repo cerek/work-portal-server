@@ -1,5 +1,7 @@
 from rest_framework import status
 from rest_framework.response import Response
+from rest_framework.renderers import JSONRenderer
+from django.contrib.auth.models import User
 from systemlogs.models import Systemlogs
 import json
 import time
@@ -39,7 +41,7 @@ class SystemlogsMiddleware:
 
         time_duration = round(end_time - start_time, 4)
         new_log_data.update({
-            "systemlog_operator": request.user.employee,
+            "systemlog_operator": request.user.username or 'NotLoginUser',
             "systemlog_operate_module": request.get_full_path(),
             "systemlog_request_method": REQUEST_METHOD_CHOICES.get(request.method),
             "systemlog_request_ip": request.headers.get('User-Ip-Address', '0.0.0.0'),
@@ -47,6 +49,10 @@ class SystemlogsMiddleware:
             "systemlog_response_code": response.status_code,
             "systemlog_response_duration": time_duration,
         })
+        if hasattr(request.user, 'employee'):
+            new_log_data.update({
+                "systemlog_operator_dept": request.user.employee.employee_department.department.name,
+            })
 
         response_data = '-'
         if request.method != 'GET':
@@ -58,6 +64,14 @@ class SystemlogsMiddleware:
         try:
             Systemlogs.objects.create(**new_log_data)
         except Exception as e:
-            return Response({'error': e.args}, status=status.HTTP_400_BAD_REQUEST)
+            response = Response(
+                data={'error': e.args},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+            response.accepted_renderer = JSONRenderer()
+            response.accepted_media_type = "application/json"
+            response.renderer_context = {}
+            response.render()
+            return response
 
         return response

@@ -11,8 +11,8 @@ class SystemlogsViewSet(mixins.ListModelMixin,
     permission_classes = [ExtendViewPermission]
     serializer_class = SystemlogsSerializer
     queryset = Systemlogs.objects.all()
-    filterset_fields = ['systemlog_operator__employee__username', 'systemlog_operator__employee_department__department__name', 'systemlog_operate_module', 'systemlog_request_method',
+    filterset_fields = ['systemlog_operator', 'systemlog_operator_dept', 'systemlog_operate_module', 'systemlog_request_method',
                         'systemlog_request_ip', 'systemlog_request_agent', 'systemlog_request_time', 'systemlog_response_code']
-    search_fields = ['systemlog_operator__employee__username', 'systemlog_operator__employee_department__department__name', 'systemlog_operate_module', 'systemlog_request_method',
+    search_fields = ['systemlog_operator', 'systemlog_operator_dept', 'systemlog_operate_module', 'systemlog_request_method',
                      'systemlog_request_ip', 'systemlog_request_agent', 'systemlog_request_body', 'systemlog_request_time', 'systemlog_response_code']
     pagination_class = StandardResultsSetPagination
