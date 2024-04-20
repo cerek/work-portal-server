@@ -21,6 +21,7 @@ urlpatterns = [
     path('', include('ticket.urls')),
     path('', include('systemlogs.urls')),
     path('', include('task.urls')),
+    path('', include('workshift.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
