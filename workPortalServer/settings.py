@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     'employee',
     'timeoff',
     'workshift',
+    'schedule',
 
     # IT
     'ticket',

@@ -18,7 +18,7 @@ class EmployeeViewSet(viewsets.ModelViewSet):
     queryset = Employee.objects.all()
     serializer_class = EmployeeSerializer
     filterset_fields = ['employee__username', 'employee__first_name',
-                        'employee__last_name', 'employee_job_title', 'employee_department__department__name']
+                        'employee__last_name', 'employee_job_title', 'employee_department__department__name', 'employee_department']
     search_fields = ['employee__username', 'employee__first_name', 'employee__last_name',
                      'employee_job_title', 'employee_department__department__name']
     pagination_class = StandardResultsSetPagination
