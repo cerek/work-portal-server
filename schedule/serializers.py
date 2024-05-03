@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from schedule.models import Schedule
+from schedule.models import Schedule, SchedulePlan
 
 
 class ScheduleSerializer(serializers.ModelSerializer):
@@ -33,3 +33,27 @@ class ScheduleSerializer(serializers.ModelSerializer):
         except Exception as e:
             raise serializers.ValidationError({"error": e.args})
         return new_schedule
+
+
+class SchedulePlanSerializer(serializers.ModelSerializer):
+    schedule_plan_employee_hm = serializers.SerializerMethodField()
+    schedule_plan_work_shift_hm = serializers.SerializerMethodField()
+    schedule_plan_status_hm = serializers.SerializerMethodField()
+
+    class Meta:
+        model = SchedulePlan
+        fields = '__all__'
+
+    def get_schedule_plan_employee_hm(self, obj):
+        res_employee_name_list = []
+        plan_employee_list = obj.schedule_plan_employee.all()
+        if plan_employee_list.count() != 0:
+            res_employee_name_list = [x['employee__username'] for x in plan_employee_list.values('employee__username')]
+        return res_employee_name_list
+
+    def get_schedule_plan_status_hm(self, obj):
+        return obj.get_schedule_plan_status_display()
+
+    def get_schedule_plan_work_shift_hm(self, obj):
+        res_shift = f"{obj.schedule_plan_work_shift.shift_start_time} - {obj.schedule_plan_work_shift.shift_end_time}"
+        return res_shift

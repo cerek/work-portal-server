@@ -21,5 +21,5 @@ class SelectBoxWorkShiftSerializer(serializers.ModelSerializer):
         fields = ['id', 'value']
 
     def get_value(self, obj):
-        res_work_shift = f'{obj.shift_name}'
+        res_work_shift = f'{obj.shift_name}({obj.shift_start_time} - {obj.shift_end_time})'
         return res_work_shift

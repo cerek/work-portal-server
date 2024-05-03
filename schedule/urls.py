@@ -1,9 +1,10 @@
 from django.urls.conf import include, path
 from rest_framework.routers import DefaultRouter
-from schedule.views import ScheduleViewSet, ScheduleForEmployeeViewSet
+from schedule.views import ScheduleViewSet, ScheduleForEmployeeViewSet, SchedulePlanViewSet
 
 router = DefaultRouter()
 router.register(r'schedule', ScheduleViewSet, basename="schedule")
+router.register(r'scheduleplan', SchedulePlanViewSet, basename="schedule-plan")
 # router.register(r'schedule-employee', ScheduleForEmployeeViewSet, basename="schedule-employee")
 
 urlpatterns = [
