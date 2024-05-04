@@ -1,8 +1,8 @@
 from rest_framework import viewsets, status
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import ListAPIView, UpdateAPIView
 from rest_framework.response import Response
 from schedule.models import Schedule, SchedulePlan
-from schedule.serializers import ScheduleSerializer, SchedulePlanSerializer
+from schedule.serializers import ScheduleSerializer, SchedulePlanSerializer, SchedulePlanSyncSerializer
 from employee.models import Employee
 from utils.public_permission import ExtendViewPermission
 from utils.public_pagination import StandardResultsSetPagination
@@ -72,3 +72,9 @@ class SchedulePlanViewSet(viewsets.ModelViewSet):
 
         # Return the deleted object to client.
         return Response(obj_serializer, status=status.HTTP_200_OK)
+
+
+class SchedulePlanSyncViewSet(UpdateAPIView):
+    permission_classes = [ExtendViewPermission]
+    serializer_class = SchedulePlanSyncSerializer
+    queryset = SchedulePlan.objects.all()

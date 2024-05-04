@@ -29,6 +29,7 @@ class SchedulePlan(models.Model):
     schedule_plan_end_date = models.DateField()
     schedule_plan_work_shift = models.ForeignKey(WorkShift, on_delete=models.DO_NOTHING)
     schedule_plan_status = models.SmallIntegerField(choices=STATUS_CHOICES, default=1)
+    schedule_plan_sync = models.BooleanField(default=False)
     schedule_plan_desc = models.TextField(null=True, blank=True)
     created_time = models.DateTimeField(auto_now_add=True)
     updated_time = models.DateTimeField(auto_now=True)
