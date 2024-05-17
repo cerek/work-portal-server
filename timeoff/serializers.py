@@ -1,7 +1,44 @@
 from rest_framework import serializers
-from timeoff.models import Timeoff, TimeoffType
+from timeoff.models import TimeoffApplication, Timeoff, TimeoffType
 from employee.models import Employee
 from datetime import datetime, timedelta, timezone
+
+
+class TimeoffApplicationSerializer(serializers.ModelSerializer):
+    timeoff_application_applicant_hm = serializers.SerializerMethodField()
+    timeoff_application_applicant_dept_hm = serializers.SerializerMethodField()
+    timeoff_application_approver_hm = serializers.SerializerMethodField()
+    timeoff_application_status_hm = serializers.SerializerMethodField()
+    timeoff_application_type_hm = serializers.SerializerMethodField()
+    timeoff_application_total_hours = serializers.SerializerMethodField()
+
+    class Meta:
+        model = TimeoffApplication
+        fields = '__all__'
+
+    def get_timeoff_application_applicant_hm(self, obj):
+        res_name = f"{obj.timeoff_application_applicant.employee.first_name.capitalize()} {obj.timeoff_application_applicant.employee.last_name.capitalize()}"
+        return res_name
+
+    def get_timeoff_application_applicant_dept_hm(self, obj):
+        res_dept = obj.timeoff_application_applicant.employee_department.department.name
+        return res_dept
+
+    def get_timeoff_application_approver_hm(self, obj):
+        res_name = '-'
+        if obj.timeoff_application_approver:
+            res_name = f"{obj.timeoff_application_approver.employee.first_name.capitalize()} {obj.timeoff_application_approver.employee.last_name.capitalize()}"
+        return res_name
+
+    def get_timeoff_application_status_hm(self, obj):
+        return obj.get_timeoff_application_status_display()
+    
+    def get_timeoff_application_type_hm(self, obj):
+        res = obj.timeoff_application_type.timeoff_type_name
+        return res
+
+    def get_timeoff_application_total_hours(self, obj):
+        return 0
 
 
 class TimeoffSerializer(serializers.ModelSerializer):
