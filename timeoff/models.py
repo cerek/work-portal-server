@@ -1,5 +1,4 @@
 from django.db import models
-from datetime import datetime
 from employee.models import Employee
 
 
@@ -28,8 +27,27 @@ class TimeoffApplication(models.Model):
             ('view_timeoff_application_approval', 'Can view timeoff application approval list'),
             ('view_timeoff_application_personal', 'Can view timeoff application personal'),
             ('manager_approval_timeoff', 'Can approval the timeoff'),
-            ('view_timeoff_all_report', 'Can view all timeoff report'),
-            ('view_timeoff_own_report', 'Can only view own timeoff report'),
+            ('view_timeoff_application_all_report', 'Can view all timeoff application report'),
+            ('view_timeoff_application_own_report', 'Can only view own timeoff application report'),
+        ]
+
+
+class Timeoff(models.Model):
+    timeoff_employee = models.ForeignKey(Employee, on_delete=models.DO_NOTHING)
+    timeoff_date = models.DateField()
+    timeoff_start_time = models.TimeField()
+    timeoff_end_time = models.TimeField()
+    timeoff_type = models.CharField(max_length=100, default='')
+    created_time = models.DateTimeField(auto_now_add=True)
+    updated_time = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.timeoff_employee.employee.username}({self.timeoff_date} {self.timeoff_start_time} - {self.timeoff_end_time})"
+
+    class Meta:
+        ordering = ['-id']
+        permissions = [
+            ('view_timeoff_personal', 'Can view timeoff personal'),
         ]
 
 

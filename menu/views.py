@@ -44,7 +44,7 @@ class MenuGenerateListView(ListAPIView):
         inventory_menu_dict = {"label": "Inventory Menu", "items": []}
         admin_menu_dict = {"label": "Admin Menu", "items": []}
 
-        hr_menu_context = ['human_resource_manager', 'schedule_manager', 'performance_manager', 'announcement_manager',]
+        hr_menu_context = ['human_resource_manager', 'schedule_manager', 'performance_manager', 'announcement_manager', 'timeoff_manager']
         it_menu_context = ['asset', 'ticket_system',]
         accounting_menu_context = []
         inventory_menu_context = ['warehouse_manager',]
