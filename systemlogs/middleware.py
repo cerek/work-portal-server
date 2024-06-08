@@ -54,9 +54,13 @@ class SystemlogsMiddleware:
                 "systemlog_operator_dept": request.user.employee.employee_department.department.name,
             })
 
-        response_data = '-'
+        response_data = {}
         if request.method != 'GET':
-            response_data = json.dumps(response.data)
+            if request.get_full_path() == "/auth/token/refresh/":
+                response_data = {}
+            else:
+                print(response.data)
+                response_data = json.dumps(response.data)
         new_log_data.update({
             "systemlog_response_context": response_data
         })

@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     'timeoff',
     'workshift',
     'schedule',
+    'clocking',
 
     # IT
     'ticket',

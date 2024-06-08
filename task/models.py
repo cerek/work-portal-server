@@ -16,3 +16,9 @@ class WorkPeriodicTask(PeriodicTask):
 
     class Meta:
         ordering = ['-created_time']
+
+# class TaskScript(models.Model):
+#     task_script_name = models.CharField(max_length=200, null=False, blank=False)
+#     task_script_path = models.CharField(max_length=300, null=False, blank=False)
+#     created_time = models.DateTimeField(auto_now_add=True)
+#     updated_time = models.DateTimeField(auto_now=True)
