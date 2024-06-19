@@ -38,7 +38,7 @@ As a `Project manager`, you can manager the Project process, Task of Project, et
 ## Related Repo
 
 - **Back-end Server**: [Work Portal Server](https://github.com/cerek/work-portal-server/)
-- **Web Client**: [Work Portal Web](https://github.com/cerek/work-portal)
+- **Web Client**: [Work Portal Web](https://github.com/cerek/work-portal-web)
 - **Phone App Client**:
   - [iOS]()
   - [Android]()
